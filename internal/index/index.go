@@ -623,6 +623,13 @@ func (idx *DB) ListSteps(sessionID string, limit int) ([]StepInfo, error) {
 	return steps, rows.Err()
 }
 
+// CountSteps returns the total number of steps for a session.
+func (idx *DB) CountSteps(sessionID string) (int, error) {
+	var count int
+	err := idx.db.QueryRow(`SELECT COUNT(*) FROM steps WHERE session_id = ?`, sessionID).Scan(&count)
+	return count, err
+}
+
 // ListAllSessions returns all sessions
 func (idx *DB) ListAllSessions() ([]SessionInfo, error) {
 	rows, err := idx.db.Query(`
