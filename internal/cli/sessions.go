@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/regent-vcs/regent/internal/index"
@@ -45,17 +43,7 @@ func SessionsCmd() *cobra.Command {
 		Short: "List all sessions",
 		Long:  "Display all recorded sessions with their metadata and head steps.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if outputFormat != sessionsFormatText && outputFormat != sessionsFormatJSON {
-				return fmt.Errorf("unsupported format %q (must be \"text\" or \"json\")", outputFormat)
-			}
-
-			cwd, err := os.Getwd()
-			if err != nil {
-				return err
-			}
-
-			regentDir := filepath.Join(cwd, ".regent")
-			s, err := store.Open(regentDir)
+			s, err := openStoreFromCWD()
 			if err != nil {
 				return err
 			}
