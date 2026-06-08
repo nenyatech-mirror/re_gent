@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 
 	"github.com/regent-vcs/regent/internal/index"
@@ -17,13 +16,7 @@ func StatusCmd() *cobra.Command {
 		Use:   "status",
 		Short: "Show the current re_gent repository status",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cwd, err := os.Getwd()
-			if err != nil {
-				return err
-			}
-
-			regentDir := filepath.Join(cwd, ".regent")
-			s, err := store.Open(regentDir)
+			s, err := openStoreFromCWD()
 			if err != nil {
 				return err
 			}
@@ -45,7 +38,7 @@ func StatusCmd() *cobra.Command {
 				return nil
 			}
 
-			fmt.Printf("%s %s %s\n", style.Brand("re_gent"), style.Label("repository:"), regentDir)
+			fmt.Printf("%s %s %s\n", style.Brand("re_gent"), style.Label("repository:"), s.Root)
 			fmt.Printf("%s %d\n\n", style.Label("Sessions:"), len(sessions))
 
 			for _, sess := range sessions {

@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -37,13 +36,7 @@ func BlameCmd() *cobra.Command {
 				}
 			}
 
-			cwd, err := os.Getwd()
-			if err != nil {
-				return err
-			}
-
-			regentDir := filepath.Join(cwd, ".regent")
-			s, err := store.Open(regentDir)
+			s, err := openStoreFromCWD()
 			if err != nil {
 				return err
 			}

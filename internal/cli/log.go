@@ -3,10 +3,8 @@ package cli
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/regent-vcs/regent/internal/index"
-	"github.com/regent-vcs/regent/internal/store"
 	"github.com/spf13/cobra"
 )
 
@@ -30,13 +28,7 @@ func LogCmd() *cobra.Command {
 		SilenceUsage: true,
 		Args:         cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cwd, err := os.Getwd()
-			if err != nil {
-				return err
-			}
-
-			regentDir := filepath.Join(cwd, ".regent")
-			s, err := store.Open(regentDir)
+			s, err := openStoreFromCWD()
 			if err != nil {
 				return err
 			}
