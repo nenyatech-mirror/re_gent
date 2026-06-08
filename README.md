@@ -1,4 +1,5 @@
 <div align="center">
+
   <a href="https://github.com/regent-vcs/regent">
     <img
       src="assets/regent-logo-dark.png"
@@ -62,6 +63,12 @@ https://github.com/user-attachments/assets/a19b7c56-2e3c-4f04-81a1-d8665e3963b8
 
   <p><em>Every agent turn is automatically captured. No manual commits needed.</em></p>
 </div>
+
+---
+
+## Examples
+
+- [Debugging a Bad Refactor](examples/bad-refactor/) - trace a realistic billing regression with `rgt log`, `rgt blame`, and `rgt show`.
 
 ---
 

@@ -502,6 +502,71 @@ func TestListSteps_Limit(t *testing.T) {
 	}
 }
 
+func TestCountSteps(t *testing.T) {
+	tmpDir := t.TempDir()
+	s, err := store.Init(tmpDir)
+	if err != nil {
+		t.Fatalf("Init failed: %v", err)
+	}
+
+	idx, err := Open(s)
+	if err != nil {
+		t.Fatalf("Open failed: %v", err)
+	}
+	defer idx.Close()
+
+	sessionID := "test-session-count"
+
+	count, err := idx.CountSteps(sessionID)
+	if err != nil {
+		t.Fatalf("CountSteps failed: %v", err)
+	}
+	if count != 0 {
+		t.Fatalf("Expected 0 steps, got %d", count)
+	}
+
+	for i := 0; i < 3; i++ {
+		blobHash, _ := s.WriteBlob([]byte("content"))
+		tree := &store.Tree{
+			Entries: []store.TreeEntry{
+				{Path: "file.txt", Blob: blobHash, Mode: 0o644},
+			},
+		}
+		treeHash, _ := s.WriteTree(tree)
+
+		step := &store.Step{
+			SessionID:      sessionID,
+			TimestampNanos: time.Now().UnixNano() + int64(i*1000),
+			Tree:           treeHash,
+			Cause: store.Cause{
+				ToolName:  "Write",
+				ToolUseID: "tool_" + string(rune('0'+i)),
+			},
+		}
+
+		stepHash, _ := s.WriteStep(step)
+		if err := idx.IndexStep(stepHash, step, tree); err != nil {
+			t.Fatalf("IndexStep %d failed: %v", i, err)
+		}
+	}
+
+	count, err = idx.CountSteps(sessionID)
+	if err != nil {
+		t.Fatalf("CountSteps failed: %v", err)
+	}
+	if count != 3 {
+		t.Fatalf("Expected 3 steps, got %d", count)
+	}
+
+	count, err = idx.CountSteps("other-session")
+	if err != nil {
+		t.Fatalf("CountSteps for other session failed: %v", err)
+	}
+	if count != 0 {
+		t.Fatalf("Expected 0 steps for other session, got %d", count)
+	}
+}
+
 func TestInsertMessage(t *testing.T) {
 	tmpDir := t.TempDir()
 	s, err := store.Init(tmpDir)
