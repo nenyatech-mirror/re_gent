@@ -42,7 +42,7 @@ func TestFormatFileStat(t *testing.T) {
 		fd   FileDiff
 		want string
 	}{
-		{"added", FileDiff{Status: "added", Additions: 10}, ""},       // has DimText
+		{"added", FileDiff{Status: "added", Additions: 10}, ""}, // has DimText
 		{"modified", FileDiff{Status: "modified", Additions: 3, Deletions: 2}, ""},
 		{"deleted", FileDiff{Status: "deleted", Deletions: 5}, ""},
 		{"binary", FileDiff{Status: "modified", IsBinary: true}, ""},

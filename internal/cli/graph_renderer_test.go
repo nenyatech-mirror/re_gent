@@ -305,7 +305,7 @@ func TestBuildStepGraph_MissingStep(t *testing.T) {
 	if len(nodes) != 1 {
 		t.Fatalf("expected 1 node, got %d", len(nodes))
 	}
-	if nodes[0].Parents != nil && len(nodes[0].Parents) > 0 {
+	if len(nodes[0].Parents) > 0 {
 		t.Errorf("missing step should have no parents")
 	}
 }
