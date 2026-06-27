@@ -12,10 +12,10 @@
 language: en-US
 
 tone_instructions: >-
-  Be concise and technical. Prioritize correctness, concurrency safety, and
-  data-integrity bugs over style nits (golangci-lint already covers style).
-  Flag anything that could break a running agent's hook, corrupt the object
-  store, or violate content-addressing / CAS invariants.
+  Be concise and technical. Prioritize correctness, concurrency, and
+  data-integrity bugs over style nits. Flag anything that breaks an agent
+  hook, corrupts the object store, or violates content-addressing/CAS
+  invariants.
 
 reviews:
   # "assertive" = more thorough feedback. Appropriate for a foundational VCS
