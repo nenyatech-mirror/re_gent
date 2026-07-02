@@ -197,7 +197,7 @@ How do I contribute?
 
 Where can I get help?
 
-  GitHub Discussions or Discord: https://discord.gg/Unf24KMh
+  GitHub Discussions or Discord: https://discord.gg/5k2Q8AmqC
 
 
 How do I report bugs?
